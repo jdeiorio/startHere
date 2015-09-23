@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+<style>
+html,body {
+    padding:0;
+    margin:0;
+}
+</style>
+<meta charset="utf-8">
+<title>player mock</title>
+    
+<!-- jquery -->
+<script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    
+<!-- jquery old IE compatibility for JSON -->
+<script language="javascript" type="text/javascript" src="./js/json2.js"></script>
+
+<!-- import google IMA SDK 3 -->
+<script type="text/javascript" src="http://s0.2mdn.net/instream/html5/ima3.js"></script>
+
+<!-- player -->
+<script language="javascript" type="text/javascript" src="./js/EmbedPlayer.js"></script>
+<script language="javascript" type="text/javascript" src="./js/FlashPlayer.js"></script>
+<script language="javascript" type="text/javascript" src="./js/SharePanelManager.js"></script>
+<script language="javascript" type="text/javascript" src="./js/HTMLPlayer.js"></script>
+<script language="javascript" type="text/javascript" src="./js/LayoutManager.js"></script>
+<script language="javascript" type="text/javascript" src="./js/MediaManager.js"></script>  
+<script language="javascript" type="text/javascript" src="./js/PreRollManager.js"></script>
+<script language="javascript" type="text/javascript" src="./js/GlobalDataObj.js"></script>
+<script language="javascript" type="text/javascript" src="./js/TrackingObject.js"></script>
+<script language="javascript" type="text/javascript" src="./js/WidgetModeView.js"></script>   
+
+</head>
+<body>
+<!-- <div id="debugconsole">DEBUG HERE</div>-->
+
+<div id="myPlayer" style="background-color:#000000"></div>
+    
+    
+<script type="text/javascript">
+$(document).ready(function(){
+  
+//$("#debugconsole").text("READY");
+console.log("Jquery is ready");
+
+var player = null;
+    
+var getOptionsObj = function(options){
+    
+    //var jsonStr = JSON.stringify(jsonObj);
+    //$("#debugconsole").text(jsonStr);
+    console.log(options);
+
+ 	player = new EmbedPlayer('myPlayer',$(document).width(),$(document).height());
+    
+    player.setResizeOverride(true);
+    
+        <?php
+            if(isset($_GET['debugPlayer']) && $_GET['debugPlayer'] == '1'){
+                echo "player.setDebug(true);\n";
+            }
+
+            if(isset($_GET['useMock']) && $_GET['useMock'] == '1'){
+                echo "player.setUnitTestOverride(true);\n";
+            }
+        ?>
+                    
+
+    player.init(options);
+
+}
+
+  // Load the use case test objects
+  $.ajax({
+    url: 'playerobject.json',
+    dataType: "json",
+    success: getOptionsObj,
+	error: function(){alert("Error: LOAD ERROR");}
+  });
+    
+    
+});
+</script>
+
+</body>
+</html>
+
+
